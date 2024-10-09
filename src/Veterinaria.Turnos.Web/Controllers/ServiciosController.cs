@@ -10,23 +10,23 @@ using Veterinaria.Turnos.Data.Entidades;
 
 namespace Veterinaria.Turnos.Web.Controllers
 {
-    public class TiposServicioController : Controller
+    public class ServiciosController : Controller
     {
         private readonly VeterinariaDbContext _context;
 
-        public TiposServicioController(VeterinariaDbContext context)
+        public ServiciosController(VeterinariaDbContext context)
         {
             _context = context;
         }
 
-        // GET: TiposServicio
+        // GET: Servicios
         public async Task<IActionResult> Index()
         {
-            var tiposServicio = await _context.TiposServicio.ToListAsync();
-			return View(tiposServicio);
+            var veterinariaDbContext = _context.Servicios.Include(s => s.TipoServicio);
+            return View(await veterinariaDbContext.ToListAsync());
         }
 
-        // GET: TiposServicio/Details/5
+        // GET: Servicios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,42 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio
+            var servicio = await _context.Servicios
+                .Include(s => s.TipoServicio)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tipoServicio == null)
+            if (servicio == null)
             {
                 return NotFound();
             }
 
-            return View(tipoServicio);
+            return View(servicio);
         }
 
-        // GET: TiposServicio/Create
+        // GET: Servicios/Create
         public IActionResult Create()
         {
+            ViewData["TipoServicioId"] = new SelectList(_context.TiposServicio, "Id", "Nombre");
             return View();
         }
 
-        // POST: TiposServicio/Create
+        // POST: Servicios/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] TipoServicio tipoServicio)
+        public async Task<IActionResult> Create([Bind("Id,TipoServicioId,Nombre,Precio,DuracionMinutos")] Servicio servicio)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tipoServicio);
+                _context.Add(servicio);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(tipoServicio);
+            ViewData["TipoServicioId"] = new SelectList(_context.TiposServicio, "Id", "Nombre", servicio.TipoServicioId);
+            return View(servicio);
         }
 
-        // GET: TiposServicio/Edit/5
+        // GET: Servicios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +77,23 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio.FindAsync(id);
-            if (tipoServicio == null)
+            var servicio = await _context.Servicios.FindAsync(id);
+            if (servicio == null)
             {
                 return NotFound();
             }
-            return View(tipoServicio);
+            ViewData["TipoServicioId"] = new SelectList(_context.TiposServicio, "Id", "Nombre", servicio.TipoServicioId);
+            return View(servicio);
         }
 
-        // POST: TiposServicio/Edit/5
+        // POST: Servicios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] TipoServicio tipoServicio)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TipoServicioId,Nombre,Precio,DuracionMinutos")] Servicio servicio)
         {
-            if (id != tipoServicio.Id)
+            if (id != servicio.Id)
             {
                 return NotFound();
             }
@@ -98,12 +102,12 @@ namespace Veterinaria.Turnos.Web.Controllers
             {
                 try
                 {
-                    _context.Update(tipoServicio);
+                    _context.Update(servicio);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TipoServicioExists(tipoServicio.Id))
+                    if (!ServicioExists(servicio.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +118,11 @@ namespace Veterinaria.Turnos.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tipoServicio);
+            ViewData["TipoServicioId"] = new SelectList(_context.TiposServicio, "Id", "Nombre", servicio.TipoServicioId);
+            return View(servicio);
         }
 
-        // GET: TiposServicio/Delete/5
+        // GET: Servicios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +130,35 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio
+            var servicio = await _context.Servicios
+                .Include(s => s.TipoServicio)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tipoServicio == null)
+            if (servicio == null)
             {
                 return NotFound();
             }
 
-            return View(tipoServicio);
+            return View(servicio);
         }
 
-        // POST: TiposServicio/Delete/5
+        // POST: Servicios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tipoServicio = await _context.TiposServicio.FindAsync(id);
-            if (tipoServicio != null)
+            var servicio = await _context.Servicios.FindAsync(id);
+            if (servicio != null)
             {
-                _context.TiposServicio.Remove(tipoServicio);
+                _context.Servicios.Remove(servicio);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TipoServicioExists(int id)
+        private bool ServicioExists(int id)
         {
-            return _context.TiposServicio.Any(e => e.Id == id);
+            return _context.Servicios.Any(e => e.Id == id);
         }
     }
 }

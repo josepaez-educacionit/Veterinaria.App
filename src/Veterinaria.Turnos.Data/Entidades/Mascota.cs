@@ -8,15 +8,18 @@ public partial class Mascota
     [Key]
     public int Id { get; set; }
 
-    [StringLength(50)]
-    
-    public string Nombre { get; set; } = null!;
+	[Required(ErrorMessage = "El campo {0} es obligatorio.")]
+	[StringLength(50, MinimumLength = 3, ErrorMessage = "La longitud del campo {0} debe estar entre {2} y {1} caracteres")]
+	public string Nombre { get; set; } = null!;
 
-    public int ClienteId { get; set; }
+	[Display(Name = "Cliente")]
+	public int ClienteId { get; set; }
 
-    public int EspecieId { get; set; }
+	[Display(Name = "Especie")]
+	public int EspecieId { get; set; }
 
-    public int RazaId { get; set; }
+	[Display(Name = "Raza")]
+	public int RazaId { get; set; }
 
     [ForeignKey("ClienteId")]
     public virtual Cliente Cliente { get; set; } = null!;

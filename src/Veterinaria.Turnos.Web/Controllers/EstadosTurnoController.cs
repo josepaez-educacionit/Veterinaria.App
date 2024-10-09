@@ -10,23 +10,22 @@ using Veterinaria.Turnos.Data.Entidades;
 
 namespace Veterinaria.Turnos.Web.Controllers
 {
-    public class TiposServicioController : Controller
+    public class EstadosTurnoController : Controller
     {
         private readonly VeterinariaDbContext _context;
 
-        public TiposServicioController(VeterinariaDbContext context)
+        public EstadosTurnoController(VeterinariaDbContext context)
         {
             _context = context;
         }
 
-        // GET: TiposServicio
+        // GET: EstadosTurno
         public async Task<IActionResult> Index()
         {
-            var tiposServicio = await _context.TiposServicio.ToListAsync();
-			return View(tiposServicio);
+            return View(await _context.EstadosTurno.ToListAsync());
         }
 
-        // GET: TiposServicio/Details/5
+        // GET: EstadosTurno/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +33,38 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tipoServicio == null)
+            var estadoTurno = await _context.EstadosTurno.FirstOrDefaultAsync(m => m.Id == id);
+            if (estadoTurno == null)
             {
                 return NotFound();
             }
 
-            return View(tipoServicio);
+            return View(estadoTurno);
         }
 
-        // GET: TiposServicio/Create
+        // GET: EstadosTurno/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: TiposServicio/Create
+        // POST: EstadosTurno/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] TipoServicio tipoServicio)
+        public async Task<IActionResult> Create([Bind("Id,Nombre")] EstadoTurno estadoTurno)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tipoServicio);
+                _context.Add(estadoTurno);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(tipoServicio);
+            return View(estadoTurno);
         }
 
-        // GET: TiposServicio/Edit/5
+        // GET: EstadosTurno/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +72,22 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio.FindAsync(id);
-            if (tipoServicio == null)
+            var estadoTurno = await _context.EstadosTurno.FindAsync(id);
+            if (estadoTurno == null)
             {
                 return NotFound();
             }
-            return View(tipoServicio);
+            return View(estadoTurno);
         }
 
-        // POST: TiposServicio/Edit/5
+        // POST: EstadosTurno/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] TipoServicio tipoServicio)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] EstadoTurno estadoTurno)
         {
-            if (id != tipoServicio.Id)
+            if (id != estadoTurno.Id)
             {
                 return NotFound();
             }
@@ -98,12 +96,12 @@ namespace Veterinaria.Turnos.Web.Controllers
             {
                 try
                 {
-                    _context.Update(tipoServicio);
+                    _context.Update(estadoTurno);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TipoServicioExists(tipoServicio.Id))
+                    if (!EstadoTurnoExists(estadoTurno.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +112,10 @@ namespace Veterinaria.Turnos.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(tipoServicio);
+            return View(estadoTurno);
         }
 
-        // GET: TiposServicio/Delete/5
+        // GET: EstadosTurno/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +123,34 @@ namespace Veterinaria.Turnos.Web.Controllers
                 return NotFound();
             }
 
-            var tipoServicio = await _context.TiposServicio
+            var estadoTurno = await _context.EstadosTurno
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tipoServicio == null)
+            if (estadoTurno == null)
             {
                 return NotFound();
             }
 
-            return View(tipoServicio);
+            return View(estadoTurno);
         }
 
-        // POST: TiposServicio/Delete/5
+        // POST: EstadosTurno/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tipoServicio = await _context.TiposServicio.FindAsync(id);
-            if (tipoServicio != null)
+            var estadoTurno = await _context.EstadosTurno.FindAsync(id);
+            if (estadoTurno != null)
             {
-                _context.TiposServicio.Remove(tipoServicio);
+                _context.EstadosTurno.Remove(estadoTurno);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TipoServicioExists(int id)
+        private bool EstadoTurnoExists(int id)
         {
-            return _context.TiposServicio.Any(e => e.Id == id);
+            return _context.EstadosTurno.Any(e => e.Id == id);
         }
     }
 }

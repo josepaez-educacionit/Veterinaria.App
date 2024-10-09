@@ -9,15 +9,17 @@ public partial class Servicio
     [Key]
     public int Id { get; set; }
 
+    [Display(Name = "Tipo de Servicio")]
     public int TipoServicioId { get; set; }
 
-    [StringLength(100)]
-    
-    public string Nombre { get; set; } = null!;
+    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+	[StringLength(100, MinimumLength = 3, ErrorMessage = "La longitud del campo {0} debe estar entre {2} y {1} caracteres.")]
+	public string Nombre { get; set; } = null!;
 
     [Column(TypeName = "money")]
     public decimal? Precio { get; set; }
 
+    [Display(Name = "Duración en minutos")]
     public short? DuracionMinutos { get; set; }
 
     [ForeignKey("TipoServicioId")]
