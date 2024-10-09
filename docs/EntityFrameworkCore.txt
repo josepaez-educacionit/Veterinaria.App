@@ -1,0 +1,17 @@
+Proyecto: Veterinaria.Turnos.Data
+
+Instalar los siguiente paquetes con el administrador de paquetes NuGet:
+
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.EntityFrameworkCore.Design
+
+Microsoft.EntityFrameworkCore.SqlServer
+
+
+scaffold-DbContext "Data Source=.\sqlexpress;Initial Catalog=Veterinaria;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -UseDatabaseNames -OutputDir Entidades -DataAnnotations -Context VeterinariaDbContext -ContextDir Data 
+
+
+https://learn.microsoft.com/es-es/ef/core/
+
+https://learn.microsoft.com/es-es/ef/core/managing-schemas/scaffolding/?tabs=vs
