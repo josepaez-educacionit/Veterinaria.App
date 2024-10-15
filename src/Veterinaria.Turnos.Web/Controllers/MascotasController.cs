@@ -22,7 +22,11 @@ namespace Veterinaria.Turnos.Web.Controllers
         // GET: Mascotas
         public async Task<IActionResult> Index()
         {
-            var veterinariaDbContext = _context.Mascotas.Include(m => m.Cliente).Include(m => m.Especie).Include(m => m.Raza);
+            var veterinariaDbContext = _context.Mascotas
+                    .Include(m => m.Cliente)
+                    .Include(m => m.Especie)
+                    .Include(m => m.Raza);
+
             return View(await veterinariaDbContext.ToListAsync());
         }
 

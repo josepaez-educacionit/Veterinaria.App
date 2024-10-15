@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Veterinaria.Turnos.Data.Entidades.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Clientes";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success"> <i class="fas fa-plus"></i> Crear Nuevo</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
@@ -54,11 +54,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Altura)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+                <td class="d-flex justify-content-around">
+                    
+                    <a class="btn btn-info btn-sm d-flex align-items-center" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </a>
+
+                    <a class="btn btn-warning btn-sm d-flex align-items-center" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+
+                    <a class="btn btn-danger btn-sm d-flex align-items-center" asp-action="Delete" asp-route-id="@item.Id">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </a>
+                </td>
         </tr>
 }
     </tbody>
