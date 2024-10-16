@@ -153,5 +153,37 @@ namespace Veterinaria.Turnos.Web.Controllers
         {
             return _context.Clientes.Any(e => e.Id == id);
         }
-    }
+
+
+		// GET: Clientes/Registrar
+		public IActionResult Registrar()
+		{
+			return View();
+		}
+
+		// POST: Clientes/Registrar
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Registrar( Cliente cliente)
+		{
+			if (ModelState.IsValid)
+			{
+                // Verificar si el número de documento o correo electrónico ya están registrados
+                bool documentoExiste = (from c in _context.Clientes
+                                        where c.NumeroDocumento == cliente.NumeroDocumento
+                                        select c).Any();
+
+                bool correoExiste = (from c in _context.Clientes
+                                     where c.Email == cliente.Email
+                                     select c).Any();
+
+
+
+                _context.Add(cliente);
+				await _context.SaveChangesAsync();
+			}
+			return View(cliente);
+		}
+
+	}
 }

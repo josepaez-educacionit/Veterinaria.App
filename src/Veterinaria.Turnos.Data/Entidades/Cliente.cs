@@ -8,7 +8,11 @@ public partial class Cliente
     [Key]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+	[Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    [Display(Name = "Nº Documento")]
+	public int NumeroDocumento { get; set; }
+
+	[Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [StringLength(50, MinimumLength = 3, ErrorMessage = "La longitud del campo {0} debe estar entre {2} y {1} caracteres.")]
     public string Nombre { get; set; } = null!;
 
